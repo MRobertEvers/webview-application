@@ -11,7 +11,7 @@ edition = "2018"
 winapi = { version = ">=0.3.8", features = ["shellapi"] }
 
 [dependencies]
-webview_official = { path = '../webview_rust' }
+webview_official = { path = '../../deps/webview' }
 serde_json = "1.0"
 serde = { version = "1.0", features = [ "derive" ] }
-nfd = {path = '../nfd-rs'}
+nfd = {path = '../../deps/nfd-rs'}
