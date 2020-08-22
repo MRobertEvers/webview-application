@@ -1,0 +1,17 @@
+[package]
+name = "rust_launcher"
+version = "0.1.0"
+authors = ["Matthew Evers <mreverssci@gmail.com>"]
+edition = "2018"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[target."cfg(target_os = \"windows\")".dependencies]
+# Required for nfd to work on windows
+winapi = { version = ">=0.3.8", features = ["shellapi"] }
+
+[dependencies]
+webview_official = { path = '../webview_rust' }
+serde_json = "1.0"
+serde = { version = "1.0", features = [ "derive" ] }
+nfd = {path = '../nfd-rs'}
