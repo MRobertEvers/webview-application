@@ -1,3 +1,3 @@
-[submodule "webview-official"]
+[submodule "webview"]
 	path = deps/webview
 	url = https://github.com/MRobertEvers/webview-rust.git
