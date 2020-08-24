@@ -1,4 +1,5 @@
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const HtmlWebpackInlineSourcePlugin = require('html-webpack-inline-source-plugin');
 const path = require('path');
 const webpack = require('webpack');
 const buildOptions = require('../build-config-options');
@@ -36,8 +37,10 @@ module.exports = {
 	plugins: [
 		new HtmlWebpackPlugin({
 			title: 'Index',
-			template: path.join('src', 'templates', 'index-production.template.html')
+			template: path.join('src', 'templates', 'index-production.template.html'),
+			inlineSource: '.(js|css)$'
 		}),
+		new HtmlWebpackInlineSourcePlugin(HtmlWebpackPlugin),
 		new webpack.DefinePlugin({
 			__SYS_BACKEND_HOST_URI__: JSON.stringify(BACKEND_HOST_URI),
 			__SYS_GOOGLE_MAPS_API_KEY__: JSON.stringify(GOOGLE_MAPS_API_KEY)
