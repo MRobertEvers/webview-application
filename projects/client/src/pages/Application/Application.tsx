@@ -1,18 +1,21 @@
 import * as React from 'react';
-import Native from '../native';
+import { useHistory } from 'react-router-dom';
+import Navigation from 'src/components/Navigation';
+import Native from 'src/native';
 
 import './application.css';
 
 const Application: React.FunctionComponent = () => {
+	const history = useHistory();
+
 	return (
 		<div className="application-container">
-			<div className="application-header">
-				<h2>TITLE</h2>
-			</div>
+			<Navigation />
 			<div>
 				<button
 					onClick={() => {
 						Native.print('This is really cool');
+						history.push('/cube');
 					}}
 				>
 					Log

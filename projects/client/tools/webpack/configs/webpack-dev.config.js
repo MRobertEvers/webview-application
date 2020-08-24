@@ -14,66 +14,61 @@ const buildDirectory = path.join(__dirname, '../../../dist');
  * @type {import('webpack').Configuration}
  */
 module.exports = {
-    mode: "development",
-    entry: [
-        'react',
-        'react-dom',
-        './src/assets/common.css',
-        './src/index.tsx'
-    ],
-    devtool: 'source-map',
-    resolve: {
-        extensions: ['.ts', '.tsx', '.js', '.jsx'],
-        // Absolute paths to where modules can be resolved.
-        modules: [sourceDirectory, modulesDirectory]
-    },
-    output: {
-        filename: 'bundle.js',
-        publicPath: '/',
-        path: buildDirectory
-    },
-    plugins: [
-        new HtmlWebpackPlugin({
-            title: "Index",
-            template: path.join('src', 'templates', 'index-development.template.html')
-        }),
-        new webpack.DefinePlugin({
-            __SYS_BACKEND_HOST_URI__: JSON.stringify(BACKEND_HOST_URI),
-            __SYS_GOOGLE_MAPS_API_KEY__: JSON.stringify(GOOGLE_MAPS_API_KEY)
-        })
-    ],
-    module: {
-        rules: [
-            {
-                test: /\.ts(x?)$/,
-                exclude: /node_modules/,
-                use: [
-                    {
-                        loader: 'ts-loader'
-                    }
-                ],
-                include: [sourceDirectory, testDirectory]
-            },
-            {
-                // https://webpack.js.org/loaders/style-loader/#injecttype
-                test: /\.css$/,
-                use: [
-                    { loader: 'style-loader', options: { injectType: 'singletonStyleTag' } },
-                    'css-loader'
-                ],
-                include: [sourceDirectory]
-            },
-            {
-                test: /.*\.(gif|png|jpeg|svg|mp4)$/i,
-                use: [
-                    {
-                        loader: 'file-loader',
-                        options: {
-                            name: 'images/[name].[ext]'
-                        }
-                    }
-                ]
-            }
-        ],
-    }
+	mode: 'development',
+	entry: ['react', 'react-dom', './src/assets/common.css', './src/index.tsx'],
+	devtool: 'source-map',
+	resolve: {
+		extensions: ['.ts', '.tsx', '.js', '.jsx'],
+		// Absolute paths to where modules can be resolved.
+		modules: [sourceDirectory, modulesDirectory],
+		alias: {
+			src: sourceDirectory
+		}
+	},
+	output: {
+		filename: 'bundle.js',
+		publicPath: '/',
+		path: buildDirectory
+	},
+	plugins: [
+		new HtmlWebpackPlugin({
+			title: 'Index',
+			template: path.join('src', 'templates', 'index-development.template.html')
+		}),
+		new webpack.DefinePlugin({
+			__SYS_BACKEND_HOST_URI__: JSON.stringify(BACKEND_HOST_URI),
+			__SYS_GOOGLE_MAPS_API_KEY__: JSON.stringify(GOOGLE_MAPS_API_KEY)
+		})
+	],
+	module: {
+		rules: [
+			{
+				test: /\.ts(x?)$/,
+				exclude: /node_modules/,
+				use: [
+					{
+						loader: 'ts-loader'
+					}
+				],
+				include: [sourceDirectory, testDirectory]
+			},
+			{
+				// https://webpack.js.org/loaders/style-loader/#injecttype
+				test: /\.css$/,
+				use: [{ loader: 'style-loader', options: { injectType: 'singletonStyleTag' } }, 'css-loader'],
+				include: [sourceDirectory]
+			},
+			{
+				test: /.*\.(gif|png|jpeg|svg|mp4)$/i,
+				use: [
+					{
+						loader: 'file-loader',
+						options: {
+							name: 'images/[name].[ext]'
+						}
+					}
+				]
+			}
+		]
+	}
 };
