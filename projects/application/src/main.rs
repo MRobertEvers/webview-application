@@ -8,12 +8,13 @@ pub enum Command {
     Read { message: String },
 }
 
-fn handle_command(command: Command, resolve: &mut dyn FnMut(CommandResult, &str)) {
+fn handle_command(command: Command, resolve: &dyn Fn(CommandResult, &str)) {
     println!("wow");
     resolve(CommandResult::SUCCESS, "good job");
 }
 
-pub fn provide_api<'a>(mut webview: webview_official::Webview<'a>) {
+pub fn provide_api<'a>(webview: &mut webview_official::Webview<'a>) {
+    // Create a copy that can be moved from!
     let w = webview.clone();
     webview.bind("__application__", create_handler(w, handle_command));
 }
@@ -29,10 +30,8 @@ fn main() {
         .url("http://localhost:4040")
         .build();
 
-    let mut w = webview.clone();
-    provide_native_api(&mut w);
+    provide_native_api(&mut webview);
 
-    let mut w2 = webview.clone();
-    provide_api(w2);
+    provide_api(&mut webview);
     webview.run();
 }
