@@ -36,7 +36,7 @@ fn handle_command(command: command_types::Command, resolve: &mut dyn FnMut(Comma
 
 // Strip array characters, [...] => ...
 fn strip_array_chars(string_array: &str) -> &str {
-    &string_array[1..string_array.len() - 2]
+    &string_array[1..string_array.len() - 1]
 }
 
 pub enum CommandResult {
@@ -76,7 +76,10 @@ pub fn create_native_api<'a>(webview: &'a Webview) -> impl FnMut(&str, &str) + '
             Ok(command) => {
                 handle_command(command, &mut resolver);
             }
-            _ => (),
+            Err(message) => {
+                println!("{}", message);
+                resolver(CommandResult::FAILURE, "Parse failure");
+            }
         };
     }
 }
@@ -103,7 +106,10 @@ where
             Ok(command) => {
                 handler_callback(command, &mut resolver);
             }
-            _ => (),
+            Err(message) => {
+                println!("{}", message);
+                resolver(CommandResult::FAILURE, "Parse failure");
+            }
         };
     }
 }

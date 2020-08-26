@@ -1,7 +1,14 @@
-use webview_native_api::{command_types, create_handler, provide_native_api, CommandResult};
+use webview_native_api::{create_handler, provide_native_api, CommandResult};
 use webview_official;
 
-fn handle_command(command: command_types::Command, resolve: &mut dyn FnMut(CommandResult, &str)) {
+#[derive(serde::Deserialize)]
+#[serde(tag = "command", rename_all = "camelCase")]
+pub enum Command {
+    /// The read text file API.
+    Read { message: String },
+}
+
+fn handle_command(command: Command, resolve: &mut dyn FnMut(CommandResult, &str)) {
     println!("wow");
     resolve(CommandResult::SUCCESS, "good job");
 }
@@ -17,10 +24,10 @@ fn main() {
         .url("http://localhost:4040")
         .build();
 
-    let w = webview.clone();
-    provide_native_api(w);
+    let mut w = webview.clone();
+    provide_native_api(&mut w);
 
-    let w2 = webview.clone();
-    webview.bind("__application__", create_handler(&w2, handle_command));
-    webview.run();
+    let mut w2 = webview.clone();
+    w2.bind("__application__", create_handler(&webview, handle_command));
+    w2.run();
 }
