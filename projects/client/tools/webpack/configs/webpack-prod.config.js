@@ -65,16 +65,20 @@ module.exports = {
 				include: [sourceDirectory]
 			},
 			{
-				test: /.*\.(gif|png|jpeg|svg|mp4)$/i,
-				use: [
-					{
-						loader: 'file-loader',
-						options: {
-							name: 'images/[name].[ext]'
-						}
-					}
-				]
+				test: /\.(jpe?g|png|ttf|eot|woff(2)?)(\?[a-z0-9=&.]+)?$/,
+				use: 'base64-inline-loader?name=[name].[ext]'
 			},
+			// {
+			// 	test: /.*\.(gif|png|jpeg|svg|mp4)$/i,
+			// 	use: [
+			// 		{
+			// 			loader: 'file-loader',
+			// 			options: {
+			// 				name: 'images/[name].[ext]'
+			// 			}
+			// 		}
+			// 	]
+			// },
 			{
 				test: /.*\.svgi$/i,
 				use: [

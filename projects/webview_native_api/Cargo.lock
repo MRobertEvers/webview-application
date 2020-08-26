@@ -50,17 +50,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "rust_launcher"
-version = "0.1.0"
-dependencies = [
- "nfd",
- "serde",
- "serde_json",
- "webview_official",
- "winapi",
-]
-
-[[package]]
 name = "ryu"
 version = "1.0.5"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -120,6 +109,17 @@ version = "0.1.0"
 dependencies = [
  "cc",
  "pkg-config",
+]
+
+[[package]]
+name = "webview_native_api"
+version = "0.1.0"
+dependencies = [
+ "nfd",
+ "serde",
+ "serde_json",
+ "webview_official",
+ "winapi",
 ]
 
 [[package]]

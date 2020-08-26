@@ -1,17 +1,14 @@
 [package]
-name = "rust_launcher"
+name = "application"
 version = "0.1.0"
 authors = ["Matthew Evers <mreverssci@gmail.com>"]
 edition = "2018"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
-[target."cfg(target_os = \"windows\")".dependencies]
-# Required for nfd to work on windows
-winapi = { version = ">=0.3.8", features = ["shellapi"] }
-
 [dependencies]
+rusqlite = { version = "0.24.0", features = ["bundled"]}
 webview_official = { path = '../../deps/webview' }
 serde_json = "1.0"
 serde = { version = "1.0", features = [ "derive" ] }
-nfd = {path = '../../deps/nfd-rs'}
+webview_native_api = {path='../webview_native_api'}

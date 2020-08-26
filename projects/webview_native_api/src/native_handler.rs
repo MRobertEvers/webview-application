@@ -48,7 +48,7 @@ pub enum CommandResult {
     FAILURE,
 }
 
-pub fn create_resolver<'a>(
+fn create_resolver<'a>(
     webview: &'a Webview,
     sequence: &'a str,
 ) -> impl FnMut(CommandResult, &str) + 'a {
@@ -79,6 +79,30 @@ pub fn create_native_api<'a>(webview: &'a Webview) -> impl FnMut(&str, &str) + '
         match parse_result {
             Ok(command) => {
                 handle_command(command, &mut resolver);
+            }
+            _ => (),
+        };
+    }
+}
+
+/**
+ * This does the same thing has 'create_native_api' but more abstracted. 'create_native_api' is left for readability.
+ */
+pub fn create_handler<'a>(
+    webview: &'a Webview,
+    handler: impl FnMut(command_types::Command, &mut dyn FnMut(CommandResult, &str)) + 'a,
+) -> impl FnMut(&str, &str) + 'a {
+    // Required because the closure will try to move the reference.
+    let mut handler_callback = handler;
+    move |sequence: &str, string_args_array: &str| {
+        let string_args_object = strip_array_chars(string_args_array);
+        let parse_result = serde_json::from_str(&string_args_object);
+
+        let mut resolver = create_resolver(webview, sequence);
+
+        match parse_result {
+            Ok(command) => {
+                handler_callback(command, &mut resolver);
             }
             _ => (),
         };
