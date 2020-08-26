@@ -35,12 +35,8 @@ fn handle_command(command: command_types::Command, resolve: &mut dyn FnMut(Comma
 }
 
 // Strip array characters, [...] => ...
-fn strip_array_chars(string_array: &str) -> String {
-    string_array
-        .chars()
-        .skip(1)
-        .take(string_array.len() - 2)
-        .collect::<String>()
+fn strip_array_chars(string_array: &str) -> &str {
+    &string_array[1..string_array.len() - 2]
 }
 
 pub enum CommandResult {
@@ -88,15 +84,18 @@ pub fn create_native_api<'a>(webview: &'a Webview) -> impl FnMut(&str, &str) + '
 /**
  * This does the same thing has 'create_native_api' but more abstracted. 'create_native_api' is left for readability.
  */
-pub fn create_handler<'a>(
+pub fn create_handler<'a, CommandType>(
     webview: &'a Webview,
-    handler: impl FnMut(command_types::Command, &mut dyn FnMut(CommandResult, &str)) + 'a,
-) -> impl FnMut(&str, &str) + 'a {
+    handler: impl FnMut(CommandType, &mut dyn FnMut(CommandResult, &str)) + 'a,
+) -> impl FnMut(&str, &str) + 'a
+where
+    CommandType: serde::de::DeserializeOwned,
+{
     // Required because the closure will try to move the reference.
     let mut handler_callback = handler;
     move |sequence: &str, string_args_array: &str| {
         let string_args_object = strip_array_chars(string_args_array);
-        let parse_result = serde_json::from_str(&string_args_object);
+        let parse_result = serde_json::from_str::<CommandType>(&string_args_object);
 
         let mut resolver = create_resolver(webview, sequence);
 

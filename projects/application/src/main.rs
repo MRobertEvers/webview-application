@@ -3,6 +3,7 @@ use webview_official;
 
 fn handle_command(command: command_types::Command, resolve: &mut dyn FnMut(CommandResult, &str)) {
     println!("wow");
+    resolve(CommandResult::SUCCESS, "good job");
 }
 
 fn main() {
@@ -20,6 +21,6 @@ fn main() {
     provide_native_api(w);
 
     let w2 = webview.clone();
-    let _handler = create_handler(&w2, handle_command);
+    webview.bind("__application__", create_handler(&w2, handle_command));
     webview.run();
 }
