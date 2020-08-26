@@ -64,13 +64,13 @@ fn create_resolver<'a>(
  *
  * This results in a string_args_array that looks like [{...}]
  */
-pub fn create_native_api<'a>(webview: &'a Webview) -> impl FnMut(&str, &str) + 'a {
+pub fn create_native_api<'a>(webview: Webview<'a>) -> impl FnMut(&str, &str) + 'a {
     move |sequence: &str, string_args_array: &str| {
         println!("{}", string_args_array);
         let string_args_object = strip_array_chars(string_args_array);
         let parse_result = serde_json::from_str(&string_args_object);
 
-        let mut resolver = create_resolver(webview, sequence);
+        let mut resolver = create_resolver(&webview, sequence);
 
         match parse_result {
             Ok(command) => {
@@ -88,7 +88,7 @@ pub fn create_native_api<'a>(webview: &'a Webview) -> impl FnMut(&str, &str) + '
  * This does the same thing has 'create_native_api' but more abstracted. 'create_native_api' is left for readability.
  */
 pub fn create_handler<'a, CommandType>(
-    webview: &'a Webview,
+    webview: Webview<'a>,
     handler: impl FnMut(CommandType, &mut dyn FnMut(CommandResult, &str)) + 'a,
 ) -> impl FnMut(&str, &str) + 'a
 where
@@ -100,7 +100,7 @@ where
         let string_args_object = strip_array_chars(string_args_array);
         let parse_result = serde_json::from_str::<CommandType>(&string_args_object);
 
-        let mut resolver = create_resolver(webview, sequence);
+        let mut resolver = create_resolver(&webview, sequence);
 
         match parse_result {
             Ok(command) => {

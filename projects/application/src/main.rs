@@ -13,9 +13,9 @@ fn handle_command(command: Command, resolve: &mut dyn FnMut(CommandResult, &str)
     resolve(CommandResult::SUCCESS, "good job");
 }
 
-pub fn provide_api<'a>(mut webview: webview_official::Webview) {
-    let mut w = webview.clone();
-    webview.bind("__application__", create_handler(&w, handle_command));
+pub fn provide_api<'a>(mut webview: webview_official::Webview<'a>) {
+    let w = webview.clone();
+    webview.bind("__application__", create_handler(w, handle_command));
 }
 
 fn main() {
@@ -30,7 +30,7 @@ fn main() {
         .build();
 
     let mut w = webview.clone();
-    provide_native_api(w);
+    provide_native_api(&mut w);
 
     let mut w2 = webview.clone();
     provide_api(w2);

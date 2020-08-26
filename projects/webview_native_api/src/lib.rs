@@ -5,9 +5,9 @@ mod native_handler;
 use native_handler::*;
 use webview_official;
 
-pub fn provide_native_api(mut webview: webview_official::Webview) {
+pub fn provide_native_api<'a>(webview: &mut webview_official::Webview<'a>) {
     let w = webview.clone();
-    webview.bind("__native__", create_native_api(&w));
+    webview.bind("__native__", create_native_api(w));
 }
 
 pub use native_handler::create_handler;

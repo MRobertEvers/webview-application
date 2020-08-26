@@ -8,7 +8,7 @@ export default function Cube() {
 	return (
 		<main>
 			<Navigation />
-			This is a cube.
+			This is a wow.
 			<div>
 				<button
 					onClick={() => {
