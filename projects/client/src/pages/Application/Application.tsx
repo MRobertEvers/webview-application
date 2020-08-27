@@ -27,6 +27,13 @@ const Application: React.FunctionComponent = () => {
 				>
 					Open
 				</button>
+				<button
+					onClick={() => {
+						Native.temp('3e92ccb8-b9da-5b7f-bdee-22e211b449f0');
+					}}
+				>
+					Woah
+				</button>
 			</div>
 		</div>
 	);

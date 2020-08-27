@@ -1,22 +1,17 @@
-use webview_native_api::{create_handler, provide_native_api, CommandResult};
+mod application;
+mod database;
+
+use application::application::handle_application;
+use webview_native_api::provide_native_api;
 use webview_official;
-
-#[derive(serde::Deserialize)]
-#[serde(tag = "command", rename_all = "camelCase")]
-pub enum Command {
-    /// The read text file API.
-    Read { message: String },
-}
-
-fn handle_command(command: Command, resolve: &dyn Fn(CommandResult, &str)) {
-    println!("wow");
-    resolve(CommandResult::SUCCESS, "good job");
-}
 
 pub fn provide_api<'a>(webview: &mut webview_official::Webview<'a>) {
     // Create a copy that can be moved from!
     let w = webview.clone();
-    webview.bind("__application__", create_handler(w, handle_command));
+    webview.bind(
+        "__application__",
+        webview_native_api::create_handler(w, handle_application),
+    );
 }
 
 fn main() {

@@ -1,22 +1,18 @@
-use rusqlite::*;
+use super::command_types::ApplicationOperation;
+use crate::database::database::read_card_by_uuid;
+use webview_native_api::CommandResult;
 
-#[derive(Debug)]
-struct Person {
-    name: String,
-}
-
-pub fn read_card(card_name: &str) -> Result<()> {
-    let conn = rusqlite::Connection::open(
-        "C:\\Users\\Matthew\\Documents\\GitHub\\webview_application\\deps\\AllPrintings.sqlite",
-    )?;
-
-    let mut stmt =
-        conn.prepare("SELECT name FROM cards WHERE uuid='b8a68840-4044-52c0-a14e-0a1c630ba42c'")?;
-
-    let person_iter = stmt.query_map(params![], |row| Ok(Person { name: row.get(0)? }))?;
-
-    for person in person_iter {
-        println!("Found person {:?}", person.unwrap());
+pub fn handle_application(command: ApplicationOperation, resolve: &dyn Fn(CommandResult, &str)) {
+    use crate::application::command_types::ApplicationOperation::*;
+    match command {
+        GetCardByUuid { uuid } => {
+            let card = read_card_by_uuid(&uuid);
+            // The string has to be json-stringified because it is 'eval'd.
+            let formatted_result = serde_json::to_string(&card.unwrap().name).unwrap();
+            resolve(CommandResult::SUCCESS, &formatted_result);
+        }
+        GetCardImage { uuid } => {
+            resolve(CommandResult::SUCCESS, "good job");
+        }
     }
-    Ok(())
 }

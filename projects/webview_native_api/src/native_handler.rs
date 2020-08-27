@@ -1,6 +1,5 @@
 use crate::command_types;
 use crate::native_apis::*;
-use serde_json::to_string;
 use webview_official::Webview;
 
 fn handle_command(command: command_types::Command, resolve: &dyn Fn(CommandResult, &str)) {
@@ -95,7 +94,7 @@ where
     CommandType: serde::de::DeserializeOwned,
 {
     // Required because the closure will try to move the reference.
-    let mut handler_callback = handler;
+    let handler_callback = handler;
     move |sequence: &str, string_args_array: &str| {
         let string_args_object = strip_array_chars(string_args_array);
         let parse_result = serde_json::from_str::<CommandType>(&string_args_object);
