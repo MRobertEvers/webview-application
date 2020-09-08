@@ -14,8 +14,12 @@ This allows for embedded of the entire application UI into a single file - and c
 
 The hashrouter is used because we don't want the webview to make any actual network requests for navigation.
 
-## Launcher
+## Application
 
 The launcher is simply a rust launcher around native webview for Windows, Linux, and Mac. The rust code itself is further another wrapper around C++ code webview.
 
-I have made a few mods for compatibility issues (primarily on windows)
+I have made a few mods for compatibility issues (primarily on windows).
+
+## Getting Started
+
+Currently, the rust application launches a webview and navigates the webview to `localhost:4040`. The client server should be running on that port.

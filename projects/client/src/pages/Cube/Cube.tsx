@@ -1,30 +1,36 @@
 import React from 'react';
-import { useHistory } from 'react-router-dom';
-import Native from 'src/native';
+import { useHistory, RouteChildrenProps } from 'react-router-dom';
 import Navigation from 'src/components/Navigation';
 
-export default function Cube() {
-	const history = useHistory();
+import styles from './cube.module.css';
+
+type CubeProps = RouteChildrenProps<{
+	id: string;
+}>;
+
+export default function Cube(props: CubeProps) {
+	const { id } = props.match.params;
+
 	return (
 		<main>
 			<Navigation />
-			This is a wow.
-			<div>
-				<button
-					onClick={() => {
-						Native.print('This is really cool');
-						history.push('/cube');
-					}}
-				>
-					Log
-				</button>
-				<button
-					onClick={() => {
-						Native.openFile();
-					}}
-				>
-					Open
-				</button>
+			<div className={styles['index-container']}>
+				<div>
+					<div className={styles['avatar']}></div>
+				</div>
+				<div className={styles['body']}>
+					<h2 className={styles['deck-title']}>Mono Blue {id}</h2>
+					<table className={styles['decklist']}>
+						<tr>
+							<th>Card Name</th>
+							<th>#</th>
+						</tr>
+						<tr>
+							<td>Shark Typhoon</td>
+							<td>1</td>
+						</tr>
+					</table>
+				</div>
 			</div>
 		</main>
 	);

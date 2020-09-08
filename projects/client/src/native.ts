@@ -33,15 +33,6 @@ class NativeAPI {
 			filename: filename
 		});
 	}
-
-	async temp(uuid: string) {
-		return (window as any)
-			.__application__({
-				command: 'getCardByUuid',
-				uuid: uuid
-			})
-			.then((result) => console.log(result));
-	}
 }
 
 export default new NativeAPI();

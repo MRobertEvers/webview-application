@@ -2,6 +2,7 @@ import * as React from 'react';
 import { useHistory } from 'react-router-dom';
 import Navigation from 'src/components/Navigation';
 import Native from 'src/native';
+import ApplicationApi from 'src/api/application';
 
 import './application.css';
 
@@ -29,7 +30,8 @@ const Application: React.FunctionComponent = () => {
 				</button>
 				<button
 					onClick={() => {
-						Native.temp('3e92ccb8-b9da-5b7f-bdee-22e211b449f0');
+						// Native.temp('3e92ccb8-b9da-5b7f-bdee-22e211b449f0');
+						ApplicationApi.getCardsByName('Shark Typhoon');
 					}}
 				>
 					Woah

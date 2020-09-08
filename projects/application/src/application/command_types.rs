@@ -5,6 +5,9 @@ pub enum ApplicationOperation {
     GetCardByUuid {
         uuid: String,
     },
+    GetCardsByName {
+        name: String,
+    },
     GetCardImage {
         uuid: String,
     },
